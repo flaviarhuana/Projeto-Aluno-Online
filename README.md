@@ -73,9 +73,9 @@ A seguir, estão os resultados dos testes realizados nos endpoints da aplicaçã
 
 ## ⚙️ Como Executar o Projeto
 
-1. **Clone o repositório:**
+1. **Clone o repositório (via terminal):**
    ```bash
-   git clone [https://github.com/flaviarhuana/Projeto-Aluno-Online.git](https://github.com/flaviarhuana/Projeto-Aluno-Online.git)
+   git clone https://github.com/flaviarhuana/Projeto-Aluno-Online.git
 
 2. **Configuração do Banco de Dados:**
 
