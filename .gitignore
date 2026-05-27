@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#Hide Username/Senha database
+src/main/resources/application-local.properties
