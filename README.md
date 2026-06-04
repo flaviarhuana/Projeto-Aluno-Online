@@ -4,7 +4,7 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-Este projeto é uma API REST desenvolvida para a disciplina de **Tecnologia para Back-End**. O sistema consiste em um CRUD (Create, Read, Update, Delete) completo para o gerenciamento de alunos, professores, disciplinas e matrículas focado em organização e persistência de dados.
+Este projeto é uma API REST desenvolvida para a disciplina de **Tecnologia para Back-End e Banco de Dados**. O sistema consiste em um CRUD (Create, Read, Update, Delete) completo para o gerenciamento de alunos, professores, disciplinas e matrículas. O foco principal do projeto está na robustez da persistência de dados e na aplicação de inteligência nativa no banco de dados, utilizando Views para relatórios otimizados, Triggers para validações em tempo real e Stored Procedures para automação de regras de negócio complexas.
 
 
 > Status: Em desenvolvimento ⚠️
@@ -120,3 +120,16 @@ A seguir, estão os resultados dos testes realizados nos endpoints da aplicaçã
    **Bash**
    ```bash
     mvn spring-boot:run
+
+## 🛠️ Configuração do Banco de Dados
+
+Este projeto utiliza recursos nativos do PostgreSQL (Views, Triggers e Stored Procedures) para regras de negócio acadêmicas.
+
+Os scripts para criação e atualização das estruturas estão localizados em:
+`src/main/resources/db/scripts/`
+
+- `views.sql`: Relatórios e espelhos de notas.
+- `triggers.sql`: Regra de limite de matrículas e logs de auditoria.
+- `procedures.sql`: Rotina automática de arredondamento de médias.
+
+**Nota:** Execute os scripts no seu cliente SQL (ex: DBeaver) antes de rodar a aplicação para o pleno funcionamento das regras de validação.
