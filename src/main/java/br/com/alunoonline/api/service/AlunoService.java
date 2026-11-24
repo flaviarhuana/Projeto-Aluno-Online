@@ -1,7 +1,10 @@
 package br.com.alunoonline.api.service;
 
+import br.com.alunoonline.api.dtos.DadosCadastroAluno;
+import br.com.alunoonline.api.dtos.DadosDetalhamentoAluno;
 import br.com.alunoonline.api.model.Aluno;
 import br.com.alunoonline.api.repository.AlunoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,24 +17,35 @@ public class AlunoService {
     @Autowired
     AlunoRepository alunoRepository;
 
-    public void criarAluno(Aluno aluno) {
+    public DadosDetalhamentoAluno criarAluno(DadosCadastroAluno dados) {
+        var aluno = new Aluno(null, dados.nomeCompleto(), dados.email(), dados.cpf());
         alunoRepository.save(aluno);
+        return new DadosDetalhamentoAluno(aluno);
     }
-    public List<Aluno> listarTodosAlunos(){
-        return alunoRepository.findAll();
+    public List<DadosDetalhamentoAluno> listarTodosAlunos(){
+        return alunoRepository.findAll().stream()
+                .map(DadosDetalhamentoAluno::new)
+                .toList();
     }
 
-    public Optional<Aluno> buscarAlunoPorId(Long id){
-        return alunoRepository.findById(id);
+    public DadosDetalhamentoAluno buscarAlunoPorId(Long id){
+        var aluno = alunoRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        return new DadosDetalhamentoAluno(aluno);
     }
 
     public void deletarAlunoPorId(Long id){
         alunoRepository.deleteById(id);
     }
 
-    public void atualizarAlunoPorId(Long id, Aluno alunoEditado){
-        alunoEditado.setId(id);
-        alunoRepository.save(alunoEditado);
+    public DadosDetalhamentoAluno atualizarAlunoPorId(Long id, DadosCadastroAluno dados){
+        var aluno = alunoRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        aluno.setNomeCompleto(dados.nomeCompleto());
+        aluno.setEmail(dados.email());
+        aluno.setCpf(dados.cpf());
+        alunoRepository.save(aluno);
+        return new DadosDetalhamentoAluno(aluno);
     }
 
 }

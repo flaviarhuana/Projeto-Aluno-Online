@@ -1,7 +1,10 @@
 package br.com.alunoonline.api.service;
 
+import br.com.alunoonline.api.dtos.DadosCadastroProfessor;
+import br.com.alunoonline.api.dtos.DadosDetalhamentoProfessor;
 import br.com.alunoonline.api.model.Professor;
 import br.com.alunoonline.api.repository.ProfessorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +16,36 @@ public class ProfessorService {
     @Autowired
     ProfessorRepository professorRepository;
 
-    public void criarProfessor(Professor professor){
+    public DadosDetalhamentoProfessor criarProfessor(DadosCadastroProfessor dados){
+        var professor = new Professor(null, dados.nome(), dados.email(), dados.cpf());
         professorRepository.save(professor);
+        return new DadosDetalhamentoProfessor(professor);
     }
 
-    public List<Professor> listarTodosProfessores(){
-        return professorRepository.findAll();
+    public List<DadosDetalhamentoProfessor> listarTodosProfessores(){
+        return professorRepository.findAll().stream()
+                .map(DadosDetalhamentoProfessor::new)
+                .toList();
     }
 
-    public Optional<Professor> buscarProfessorPorId(Long id){
-        return professorRepository.findById(id);
+    public DadosDetalhamentoProfessor buscarProfessorPorId(Long id){
+        var professor = professorRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        return new DadosDetalhamentoProfessor(professor);
     }
 
     public void deletarProfessorPorId(Long id){
         professorRepository.deleteById(id);
     }
 
-    public void atualizarProfessorPorId(Long id, Professor professorEditado){
-        professorEditado.setId(id);
-        professorRepository.save(professorEditado);
+    public DadosDetalhamentoProfessor atualizarProfessorPorId(Long id, DadosCadastroProfessor dados){
+        var professor = professorRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        professor.setNome(dados.nome());
+        professor.setEmail(dados.email());
+        professor.setCpf(dados.cpf());
+        professorRepository.save(professor);
+        return new DadosDetalhamentoProfessor(professor);
     }
 
 }
